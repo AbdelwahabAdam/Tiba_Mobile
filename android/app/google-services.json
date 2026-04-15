@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "666491901552",
+    "project_id": "tibaappnotification",
+    "storage_bucket": "tibaappnotification.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666491901552:android:cad69072db6e2dd3a086b5",
+        "android_client_info": {
+          "package_name": "com.tiba.admin.tibaadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2PUtSJQPwefccsrVqmkymO25cNo6yqJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666491901552:android:9c84af2ec6483d63a086b5",
+        "android_client_info": {
+          "package_name": "com.tiba.admin.tibaadmin.fluttertiba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2PUtSJQPwefccsrVqmkymO25cNo6yqJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
