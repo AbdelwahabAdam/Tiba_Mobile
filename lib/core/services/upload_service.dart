@@ -43,7 +43,6 @@ class UploadService {
       final res = await ApiService.dio.post(
         '/upload/image',
         data: formData,
-        options: Options(contentType: 'multipart/form-data'),
       );
 
       final url = res.data['full_image_url'] as String?;

@@ -68,12 +68,12 @@ class OrderPage extends StatelessWidget {
     bool saving = false;
 
     const statuses = [
-      'pending',
-      'processing',
-      'shipped',
-      'delivered',
-      'cancelled',
-      'returned',
+      'PENDING',
+      'PROCESSING',
+      'SHIPPED',
+      'DELIVERED',
+      'CANCELLED',
+      'RETURNED',
     ];
 
     showModalBottomSheet(
@@ -155,7 +155,7 @@ class OrderPage extends StatelessWidget {
     );
     bool saving = false;
 
-    const itemStatuses = ['active', 'cancelled', 'returned', 'out_of_stock'];
+    const itemStatuses = ['ACTIVE', 'CANCELLED', 'RETURNED', 'OUT_OF_STOCK'];
 
     showModalBottomSheet(
       context: context,
@@ -357,7 +357,9 @@ class OrderPage extends StatelessWidget {
                   ),
                 ),
                 title: Text(
-                  'Order #${item.id}',
+                  item.userName != null
+                      ? 'Order #${item.id} - ${item.userName}'
+                      : 'Order #${item.id}',
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 subtitle: Column(

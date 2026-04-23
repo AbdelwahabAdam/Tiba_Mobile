@@ -164,6 +164,7 @@ class OfferPage extends StatelessWidget {
                             await controller.createOffer(
                               title: payload['title'] as String,
                               description: payload['description'] as String,
+                              imageUrl: payload['image_url'] as String,
                               startDate: startDate,
                               endDate: endDate,
                               isActive: isActive,
@@ -173,6 +174,7 @@ class OfferPage extends StatelessWidget {
                               id: offer.id,
                               title: payload['title'] as String,
                               description: payload['description'] as String,
+                              imageUrl: payload['image_url'] as String,
                               startDate: startDate,
                               endDate: endDate,
                               isActive: isActive,

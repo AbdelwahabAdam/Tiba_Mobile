@@ -22,42 +22,42 @@ class CrudListPage<T> extends StatelessWidget {
       final loading = controller.loading.value;
       final isEmpty = items.isEmpty && !loading;
 
-      return Column(
-        children: [
-          // ── Search bar ──
-          if (onSearch != null)
-            Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search_rounded, size: 20),
-                  hintText: 'Search...',
-                  suffixIcon: controller.search.value.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.close_rounded, size: 18),
-                          onPressed: () => onSearch!(''),
-                        )
-                      : null,
+      return RefreshIndicator(
+        onRefresh: () => controller.fetch(reset: true),
+        child: Column(
+          children: [
+            // ── Search bar ──
+            if (onSearch != null)
+              Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search_rounded, size: 20),
+                    hintText: 'Search...',
+                    suffixIcon: controller.search.value.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.close_rounded, size: 18),
+                            onPressed: () => onSearch!(''),
+                          )
+                        : null,
+                  ),
+                  onChanged: onSearch,
                 ),
-                onChanged: onSearch,
               ),
-            ),
 
-          // ── Content ──
-          Expanded(
-            child: isEmpty
-                ? _EmptyState()
-                : NotificationListener<ScrollNotification>(
-                    onNotification: (scroll) {
-                      if (scroll.metrics.pixels >=
-                          scroll.metrics.maxScrollExtent - 100) {
-                        controller.fetch();
-                      }
-                      return false;
-                    },
-                    child: RefreshIndicator(
-                      onRefresh: () => controller.fetch(reset: true),
+            // ── Content ──
+            Expanded(
+              child: isEmpty
+                  ? _EmptyState()
+                  : NotificationListener<ScrollNotification>(
+                      onNotification: (scroll) {
+                        if (scroll.metrics.pixels >=
+                            scroll.metrics.maxScrollExtent - 100) {
+                          controller.fetch();
+                        }
+                        return false;
+                      },
                       child: ListView.builder(
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.only(top: 6, bottom: 100),
@@ -81,9 +81,9 @@ class CrudListPage<T> extends StatelessWidget {
                         },
                       ),
                     ),
-                  ),
-          ),
-        ],
+            ),
+          ],
+        ),
       );
     });
   }

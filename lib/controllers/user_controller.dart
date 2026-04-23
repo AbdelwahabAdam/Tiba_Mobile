@@ -45,6 +45,10 @@ class UserController extends BaseCrudController<UserModel> {
     fetch(reset: true);
   }
 
+  Future<void> setDeletedStatus(int id, bool isDeleted) async {
+    await updateUser(id, {'is_deleted': isDeleted});
+  }
+
   Future<void> deleteUser(int id) async {
     await ApiService.dio.delete('$endpoint/delete/$id');
     fetch(reset: true);

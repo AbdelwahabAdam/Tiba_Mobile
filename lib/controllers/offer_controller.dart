@@ -17,12 +17,14 @@ class OfferController extends BaseCrudController<OfferModel> {
     required DateTime startDate,
     required DateTime endDate,
     required bool isActive,
+    String imageUrl = '',
   }) async {
     await ApiService.dio.post(
       '$endpoint/create',
       data: {
         'title': title,
         'description': description,
+        if (imageUrl.isNotEmpty) 'image_url': imageUrl,
         'start_date': startDate.toIso8601String(),
         'end_date': endDate.toIso8601String(),
         'is_active': isActive,
@@ -38,12 +40,14 @@ class OfferController extends BaseCrudController<OfferModel> {
     required DateTime startDate,
     required DateTime endDate,
     required bool isActive,
+    String imageUrl = '',
   }) async {
     await ApiService.dio.put(
       '$endpoint/update/$id',
       data: {
         'title': title,
         'description': description,
+        'image_url': imageUrl,
         'start_date': startDate.toIso8601String(),
         'end_date': endDate.toIso8601String(),
         'is_active': isActive,

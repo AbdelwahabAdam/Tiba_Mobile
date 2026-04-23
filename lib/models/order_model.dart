@@ -30,6 +30,8 @@ class OrderItemModel {
 class OrderModel {
   final int id;
   final int userId;
+  final String? userName;
+  final String? userEmail;
   final int addressId;
   final String status;
   final double total;
@@ -38,6 +40,8 @@ class OrderModel {
   OrderModel({
     required this.id,
     required this.userId,
+    this.userName,
+    this.userEmail,
     required this.addressId,
     required this.status,
     required this.total,
@@ -49,6 +53,8 @@ class OrderModel {
     return OrderModel(
       id: json['id'],
       userId: json['user_id'],
+      userName: json['user_name'] as String?,
+      userEmail: json['user_email'] as String?,
       addressId: json['address_id'],
       status: json['status'],
       total: (json['total'] ?? 0).toDouble(),

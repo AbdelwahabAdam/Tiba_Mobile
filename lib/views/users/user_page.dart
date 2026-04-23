@@ -37,7 +37,9 @@ class _UserPageState extends State<UserPage> {
     );
 
     bool isActive = user.isActive;
+    bool isDeleted = user.isDeleted;
     bool isVerified = user.isVerified;
+    bool receiveEmails = user.receiveEmails;
     int? selectedSegmentId = user.segmentId;
     int selectedRoleId = user.roleId;
     bool saving = false;
@@ -143,14 +145,37 @@ class _UserPageState extends State<UserPage> {
 
                 SwitchListTile(
                   title: const Text('Active'),
-                  value: isActive,
-                  onChanged: (v) => setState(() => isActive = v),
+                  value: isDeleted ? false : isActive,
+                  onChanged: isDeleted
+                      ? null
+                      : (v) => setState(() => isActive = v),
+                ),
+
+                SwitchListTile(
+                  title: const Text('Scheduled For Deletion'),
+                  subtitle: const Text(
+                    'When enabled, the account is suspended for 7 days before permanent deletion. Contact admin to undo it.',
+                  ),
+                  value: isDeleted,
+                  onChanged: (v) => setState(() {
+                    isDeleted = v;
+                    if (v) {
+                      isActive = false;
+                    }
+                  }),
                 ),
 
                 SwitchListTile(
                   title: const Text('Verified'),
                   value: isVerified,
                   onChanged: (v) => setState(() => isVerified = v),
+                ),
+
+                SwitchListTile(
+                  title: const Text('Receive Emails'),
+                  subtitle: const Text('Send order status emails to this user'),
+                  value: receiveEmails,
+                  onChanged: (v) => setState(() => receiveEmails = v),
                 ),
 
                 const SizedBox(height: 12),
@@ -170,7 +195,9 @@ class _UserPageState extends State<UserPage> {
                             'wallet_balance':
                                 double.tryParse(walletCtrl.text) ?? 0.0,
                             'is_active': isActive,
+                            'is_deleted': isDeleted,
                             'is_verified': isVerified,
+                            'receive_emails': receiveEmails,
                           });
                           Get.back();
                         },
@@ -244,6 +271,31 @@ class _UserPageState extends State<UserPage> {
                     children: [
                       statusChip(item.isActive),
                       const SizedBox(width: 6),
+                      if (item.isDeleted) ...[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.orange.shade300,
+                              width: 0.8,
+                            ),
+                          ),
+                          child: Text(
+                            'Deleted',
+                            style: TextStyle(
+                              color: Colors.orange.shade800,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                      ],
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -279,18 +331,26 @@ class _UserPageState extends State<UserPage> {
                   ),
                   IconButton(
                     icon: Icon(
-                      Icons.delete_rounded,
+                      item.isDeleted
+                          ? Icons.restore_from_trash_rounded
+                          : Icons.delete_sweep_rounded,
                       size: 20,
-                      color: Colors.red.shade400,
+                      color: item.isDeleted
+                          ? Colors.green.shade500
+                          : Colors.red.shade400,
                     ),
                     onPressed: () async {
                       if (await confirmDelete(
                         context,
-                        title: 'Delete User',
-                        message:
-                            'Delete ${item.firstName} ${item.lastName}? This cannot be undone.',
+                        title: item.isDeleted ? 'Restore User' : 'Suspend User',
+                        message: item.isDeleted
+                            ? 'Restore ${item.firstName} ${item.lastName} and allow login again?'
+                            : 'Suspend ${item.firstName} ${item.lastName} and mark the account for permanent deletion after 7 days?',
                       )) {
-                        controller.deleteUser(item.id);
+                        await controller.setDeletedStatus(
+                          item.id,
+                          !item.isDeleted,
+                        );
                       }
                     },
                   ),

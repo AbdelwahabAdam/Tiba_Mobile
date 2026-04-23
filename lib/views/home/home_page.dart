@@ -7,6 +7,7 @@ import '../categories/sub_category_page.dart';
 import '../orders/order_page.dart';
 import '../products/price_segment.dart';
 import '../products/product_page.dart';
+import '../banners/banner_page.dart';
 import '../offers/offer_page.dart';
 import '../users/user_page.dart';
 import '../users/user_segment.dart';
@@ -51,6 +52,7 @@ class _HomePageState extends State<HomePage> {
         SubCategoryPage(),
         ProductPage(),
         OfferPage(),
+        BannerPage(),
         OrderPage(),
         UserPage(),
         UserSegmentPage(),
@@ -78,6 +80,11 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.local_offer_outlined),
           activeIcon: Icon(Icons.local_offer),
           label: 'Offers',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.view_carousel_outlined),
+          activeIcon: Icon(Icons.view_carousel),
+          label: 'Banners',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.receipt_long_outlined),
@@ -169,10 +176,13 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       body: pages[index],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: index,
-        items: tabs,
-        onTap: (i) => setState(() => index = i),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: BottomNavigationBar(
+          currentIndex: index,
+          items: tabs,
+          onTap: (i) => setState(() => index = i),
+        ),
       ),
     );
   }

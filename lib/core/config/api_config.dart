@@ -6,7 +6,7 @@ class ApiConfig {
 
   static const String _devBaseUrl = String.fromEnvironment(
     'DART_DEFINE_DEV_BASE_URL',
-    defaultValue: 'http://192.168.1.30:6543',
+    defaultValue: 'http://192.168.1.27:6543',
   );
 
   static String get baseUrl {
